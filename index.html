@@ -3,235 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Card Matching Game</title>
+    <title>Program Download</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .game-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            justify-content: center;
-            align-items: center;
-            max-width: 360px;
-            width: 100%;
-            padding: 10px;
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(164, 46, 255, 0.6);
             text-align: center;
+            background-color: #f4f4f4;
+            color: #333;
         }
-
-        .card {
-            width: 80px;
-            height: 80px;
-            background-color: #a42eff; /* Purple background */
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            color: white;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.3s ease;
-            overflow: hidden;
-            box-shadow: 0 0 5px rgba(255, 0, 255, 0.6); /* Purple glowing effect */
-        }
-
-        .card.flip {
-            background-color: #1e1e1e;
-            color: #ffffff;
-            box-shadow: 0 0 10px rgba(183, 0, 255, 0.8); /* Glowing effect */
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .result {
-            font-size: 16px;
-            margin-top: 10px;
-            color: #aaa;
-        }
-
-        .score {
-            font-size: 18px;
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 20px;
             font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .btn {
-            background-color: #a42eff;
-            color: white;
+            color: #fff;
+            background-color: #007BFF;
             border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
             border-radius: 5px;
-            margin-top: 15px;
-            box-shadow: 0 0 15px rgba(164, 46, 255, 0.8);
-            transition: all 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-
-        .btn:hover {
-            background-color: #8a1bd4;
-            box-shadow: 0 0 20px rgba(164, 46, 255, 1);
+        .button:hover {
+            background-color: #0056b3;
         }
-
-        .btn:focus {
-            outline: none;
-        }
-
-        /* Make it mobile-friendly */
-        @media (max-width: 360px) {
-            .game-container {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 5px;
-                max-width: 360px;
-            }
-
-            .card {
-                width: 70px;
-                height: 70px;
-                font-size: 10px;
-            }
-
-            .result, .score {
-                font-size: 14px;
-            }
-
-            .btn {
-                font-size: 12px;
-                padding: 8px;
-                width: 100%;
-            }
-        }
-
     </style>
 </head>
 <body>
-    <div class="game-container" id="game-board">
-        <!-- Cards will be dynamically added here -->
-    </div>
-    <div class="result" id="result"></div>
-    <div class="score" id="score">Score: 0</div>
-    <button class="btn" onclick="startGame()">Start New Game</button>
-
-    <script>
-        let gameBoard = document.getElementById('game-board');
-        let score = 0;
-        let flippedCards = [];
-        let matchedCards = [];
-        let cards = [];
-
-        // Start a new game
-        function startGame() {
-            gameBoard.innerHTML = '';  // Clear previous game
-            flippedCards = [];
-            matchedCards = [];
-            score = 0;
-            document.getElementById('score').textContent = 'Score: ' + score;
-            document.getElementById('result').textContent = '';
-
-            // Add user-provided image URLs for the cards
-            const userImages = [
-                "https://lip.tj/upload/iblock/84a/84a492db2db7f18b618ee4c108a04bf7.jpg",
-                "https://lip.tj/upload/iblock/cd3/cd3691709be15d23fce1475af95c668a.jpg",
-                "https://lip.tj/upload/iblock/b30/b307b5027b07309c39e970e6d1acdddc.jpg",
-                "https://lip.tj/upload/iblock/53d/53d2f164335eecda140e689298c0ef76.jpg",
-                "https://lip.tj/upload/iblock/3f3/3f37c61380a9c47b8ef3f3f2755a2982.png",
-                "https://lip.tj/upload/iblock/866/8660f080802438ba01171a0894cac1c6.JPG",
-                "https://lip.tj/upload/iblock/cc8/cc8163fd0284bdb832bbecc8a1a4f9ca.jpg",
-                "https://lip.tj/upload/iblock/9c4/9c420f0f77805ec5f5214bfd427ae49d.jpg",
-                "https://lip.tj/upload/iblock/88f/88f67e0daafd56a17b16194058a255fe.jpg"
-            ];
-
-            // Double the images to make pairs
-            cards = [...userImages, ...userImages];
-
-            // Shuffle cards
-            shuffle(cards);
-
-            // Display cards on the board
-            cards.forEach(image => {
-                let card = createCard(image);
-                gameBoard.appendChild(card);
-            });
-        }
-
-        // Shuffle array function
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        // Create card element
-        function createCard(image) {
-            let card = document.createElement('div');
-            card.classList.add('card');
-            card.dataset.image = image;
-            card.addEventListener('click', flipCard);
-            return card;
-        }
-
-        // Flip the card
-        function flipCard() {
-            if (flippedCards.length < 2 && !this.classList.contains('flip')) {
-                this.classList.add('flip');
-                let flippedCardImage = this.dataset.image;
-
-                // Create image inside card
-                let img = document.createElement('img');
-                img.src = flippedCardImage;
-                this.innerHTML = '';
-                this.appendChild(img);
-
-                flippedCards.push(this);
-
-                // Check for a match
-                if (flippedCards.length === 2) {
-                    if (flippedCards[0].dataset.image === flippedCards[1].dataset.image) {
-                        matchedCards.push(flippedCards[0], flippedCards[1]);
-                        score += 10;
-                        document.getElementById('score').textContent = 'Score: ' + score;
-                        flippedCards = [];
-                    } else {
-                        setTimeout(() => {
-                            flippedCards[0].classList.remove('flip');
-                            flippedCards[1].classList.remove('flip');
-                            flippedCards[0].innerHTML = '';
-                            flippedCards[1].innerHTML = '';
-                            flippedCards = [];
-                        }, 1000);
-                    }
-                }
-            }
-
-            // Check if the game is over
-            if (matchedCards.length === cards.length) {
-                document.getElementById('result').textContent = 'You win! Final Score: ' + score;
-            }
-        }
-
-        // Start the first game when the page loads
-        startGame();
-    </script>
+    <h1>Download My Program</h1>
+    <p>Click the button below to download my program:</p>
+    <a href="https://example.com/my-program.zip" class="button" download>Download Program</a>
 </body>
 </html>
