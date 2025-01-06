@@ -10,20 +10,31 @@
     <button id="notify-btn">Enable Notifications</button>
 
     <script>
-        document.getElementById('notify-btn').addEventListener('click', () => {
-            // Request permission for notifications
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    // Send a notification
-                    new Notification("Hello!", {
-                        body: "This is a simple notification from your Django app.",
-                        icon: "/static/images/notification-icon.png" // Optional: Add an icon
-                    });
-                } else {
-                    alert("Notifications are disabled!");
-                }
-            });
-        });
+        // Function to show a notification
+        function showNotification() {
+            if (Notification.permission === "granted") {
+                new Notification("Hello!", {
+                    body: "This is a simple notification from your Django app.",
+                    icon: "/static/images/notification-icon.png" // Optional: Add an icon
+                });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification("Hello!", {
+                            body: "This is a simple notification from your Django app.",
+                            icon: "/static/images/notification-icon.png" // Optional: Add an icon
+                        });
+                    } else {
+                        alert("Notifications are disabled!");
+                    }
+                });
+            } else {
+                alert("You have blocked notifications!");
+            }
+        }
+
+        // Event listener for the button
+        document.getElementById('notify-btn').addEventListener('click', showNotification);
     </script>
 </body>
 </html>
