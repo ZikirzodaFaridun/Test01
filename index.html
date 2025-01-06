@@ -3,35 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Program Download</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .button {
-            display: inline-block;
-            padding: 15px 25px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Simple Notifications</title>
 </head>
 <body>
-    <h1>Download My Program</h1>
-    <p>Click the button below to download my program:</p>
-    <a href="https://example.com/my-program.zip" class="button" download>Download Program</a>
+    <h1>Welcome to My Django App</h1>
+    <button id="notify-btn">Enable Notifications</button>
+
+    <script>
+        document.getElementById('notify-btn').addEventListener('click', () => {
+            // Request permission for notifications
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    // Send a notification
+                    new Notification("Hello!", {
+                        body: "This is a simple notification from your Django app.",
+                        icon: "/static/images/notification-icon.png" // Optional: Add an icon
+                    });
+                } else {
+                    alert("Notifications are disabled!");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
