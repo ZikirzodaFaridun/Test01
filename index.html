@@ -2,782 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Eo_circle_purple_white_letter-n.svg/2048px-Eo_circle_purple_white_letter-n.svg.png" type="image/x-icon">
-
+  <title>Music Search</title>
   <style>
-    :root {
-      --bg-color: #121212;
-      --text-color: #fff;
-      --container-color: #1e1e1e;
-      --hover-color: #2a2a2a;
-      --border-color: #333;
-      --header-color: #a42eff; /* Default violet */
-    }
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .chat-container {
-      margin: auto;
-      background-color: var(--container-color);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      transition: background-color 0.3s, box-shadow 0.3s;
-    }
-    .header {
-      background-color: var(--container-color);
-      color: var(--text-color);
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      transition: background-color 0.3s;
-    }
-    .header .title {
-      font-size: 1.5rem;
-      color: var(--text-color);
-
-    }
-    .header .icons {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      color: var(--text-color);
-
-    }
-    .header .icons i {
-      font-size: 1rem;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-    .header .icons i:hover {
-      color: var(--text-color);
-    }
-    .theme-toggle {
-      background: none;
-      border: none;
-      color: var(--text-color);
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-    .search-bar {
-      padding: 10px;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .search-bar input {
-      width: 95%;
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 1rem;
-      outline: none;
-      background-color: var(--container-color);
-      color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .chat-list {
-      flex: 1;
-      overflow-y: auto;
-      padding-bottom: 120px;
-    }
-    .chat-item {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid var(--border-color);
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.3s;
-}
-
-.chat-item:hover {
-  background-color: var(--hover-color);
-}
-
-.chat-item img {
-  width: 50px;
-  height: 50px;
-  border: 2px solid var(--border-color);
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 15px;
-}
-/* Shift the item to the left on click */
-.chat-item:active {
-  transform: translateX(100px);
-}
-
-    .chat-details {
-      flex: 1;
-    }
-    .chat-details h4 {
+      background: #111;
+      color: #fff;
       margin: 0;
-      font-size: 1rem;
-      font-weight: bold;
+      padding: 20px;
     }
-    .chat-details p {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
-  color: #aaa;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word; /* Forces breaks for long, unbroken text */
-  overflow: hidden; 
-  
-}
-
-    .chat-meta {
-      text-align: right;
+    h1 {
+      text-align: center;
     }
-    .chat-meta span {
-      display: block;
-      font-size: 0.8rem;
-      color: #888;
-    }
-    .chat-meta .unread {
-      background-color: var(--header-color);
-      color: white;
-      font-size: 0.8rem;
-      padding: 2px 6px;
-      border-radius: 20px;
-      display: inline-block;
-      margin-top: 5px;
-    }
-    .status {
-      position: relative;
-      display: inline-block;
-    }
-    .status::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 10px;
-      height: 10px;
-      margin-right: 15px;
-      margin-bottom: 5px;
-      border: 2px solid var(--container-color);
-      border-radius: 50%;
-    }
-    .status.online::after {
-      background-color: #4caf50;
-    }
-    .status.offline::after {
-      background-color: #ff0000;
-    }
-    @media screen and (max-width: 768px) {
-      .chat-item img {
-        width: 50px;
-        height: 50px;
-      }
-      .chat-details h4 {
-        font-size: 0.9rem;
-      }
-      .chat-details p {
-        font-size: 0.8rem;
-      }
-      
-    }
-    .use {
-      color: var(--text-color);
-      text-decoration: none;
-    }
-    .chat-list::-webkit-scrollbar {
-      width: 5px;
-    }
-    .chat-list::-webkit-scrollbar-thumb {
-      background-color: var(--header-color);
-    }
-    .chat-list::-webkit-scrollbar-track {
-      background-color: var(--container-color);
-    }
-    a {
-      color: white;
-      text-decoration: none;
-    }
-    .adds {
-      background-color: var(--container-color);
-      border:1px solid var(--border-color);
-      border-radius: 100px;
-      max-width: 70px;
-      max-height: 40px;
-      padding: 10px;
-      margin: 10px;
-      margin-right: 1px;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: all 0.3s ease-in-out
-
-    }
-    .show-friends {
-      background-color: var(--container-color);
-      border:1px solid var(--border-color);
-      border-radius: 100px;
-      max-width: 70px;
-      max-height: 40px;
-      padding: 10px;
-      margin: 10px;
-      margin-right: 1px;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: all 0.3s ease-in-out
-    }
-    .bottom-bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.19);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(6.5px);
-        -webkit-backdrop-filter: blur(6.5px);
-        border: 1px solid rgba(255, 255, 255, 0.49);
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 0.6rem 0;
-        z-index: 1000;
-      }
-
-      .bottom-bar a {
-      text-decoration: none;
-      color: var(--bottom-color); /* Neutral text color */
-      font-size: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      transition: color 0.3s ease;
-    }
-
-    .bottom-bar a:hover {
-      color: var(--bottom-color); /* Neutral text color */
-    }
-
-    .badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background-color: #ff3b3b;
-      color: #ffffff;
-      font-size: 0.7rem;
-      font-weight: bold;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
+    #searchForm {
       display: flex;
       justify-content: center;
-      align-items: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 20px 0;
     }
-    .groups {
-      background-color: var(--container-color);
-      border:1px solid var(--border-color);
-      border-radius: 100px;
+    input[type=\"text\"] {
       padding: 10px;
-      margin: 10px;
-      margin-right: 1px;
-      color: var(--text-color);
+      width: 300px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #1db954;
+      border: none;
+      color: white;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s ease-in-out
     }
-    .adds:hover, .show-friends:hover, .groups:hover, .smart:hover {
-      background-color: var(--border-color);
+    #results {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
     }
-    a {
-      color: var(--text-color);
-    }
-    .meta {
-      border-bottom: 1px solid var(--border-color);
-      display: flex; /* Items side by side */
-      overflow-x: auto; /* Enable horizontal scrolling */
-      white-space: nowrap; /* Prevent items from wrapping */
-      gap: 10px; /* Space between items */
-    }
-    .search-bar i {
-      position: absolute;
-      left: 10px;
-      transform: translateY(-50%);
-      transform: translateX(20px);
+    .song {
+      background: #222;
       padding: 10px;
-      font-size: 18px;
-      color: var(--text-color);
-      pointer-events: none;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
     }
-    .smart {
-      background-color: var(--container-color);
-      border:1px solid var(--border-color);
-      border-radius: 100px;
-      padding: 10px;
-      margin: 10px;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: all 0.3s ease-in-out
+    .song img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    audio {
+      width: 100%;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  </head>
-  <div class="bottom-bar">
-    <a href="{% url 'users_list' %}">
-      <span class="icon"><i class="fas fa-search"></i></span>
-    </a>
-    <a href="{% url 'chat_users_list' %}">
-      <span class="icon"><i class="fas fa-home"></i></span>
-    </a>
-    <a href="{% url 'delete_account' %}">
-      <span class="icon"><i class="fas fa-cog"></i></span>
-    </a>
-    <a href="{% url 'profile' %}">
-      <style>
-        .icon img {
-          width: 35px;
-          height: 35px;
-          border-radius: 100px;
-          margin-top: 3px;
-        }
-      </style>
-      <span class="icon">
-      <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Profile Picture" style="object-fit: cover;">
-    </a>
+  <h1>Search for Music 🎵</h1>
+  <div id="searchForm">
+    <input type="text" id="searchInput" placeholder="Enter song or artist...">
+    <button onclick="searchMusic()">Search</button>
   </div>
+  <div id="results"></div>
 
-  <div class="chat-container">
-    <div class="header">
-      <span class="title">Network</span>
-      <div class="icons">
-
-        <a href="{% url 'chat_with_user' request.user.username %}">
-          <button class="theme-toggle"><i class="fas fa-pencil-alt"></i></button>
-        </a>
-        <button class="theme-toggle" onclick="toggleTheme()">
-          <i class="fas fa-adjust"></i>
-        </button>
-      </div>
-    </div>
-    <form method="get" action="{% url 'chat_users_list' %}">
-
-      <div class="search-container">
-        <span class="icon"><i class="fas fa-search"></i></span>
-        <input type="text" name="search" placeholder="Search users or chats...">
-    </div>
-  </form>
-  
-  <style>
-    .search-container {
-      position: relative;
-      margin: 10px; /* Ensure consistent spacing on all sides */
-      width: calc(90% - 30px); /* 10px padding on both sides */
-
-    }
-
-    .search-container input {
-      width: 90%; /* 10px padding on both sides */
-
-      padding: 10px 40px; /* Add space for the icon */
-      font-size: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      outline: none;
-      background-color: var(--container-color);
-      color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-
-    .search-container .icon {
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      transform: translateY(-50%);
-      font-size: 18px;
-      color: #aaa;
-      pointer-events: none;
-    }
-
-    .search-container input::placeholder {
-      color: #aaa; /* Hide the placeholder text */
-    }
-
-    .search-container input:focus::placeholder {
-      color: #aaa; /* Show the placeholder text on focus */
-    }
-    .news {
-  background-color: var(--border-color);
-  border: 1px solid var(--border-color);
-  border-radius: 100px;
-  padding: 5px;
-  font-size: 10px;
-  box-shadow: 5px 5px 5px rgba(117, 117, 117, 0.3);
-  color: var(--text-color);
-  cursor: pointer;
-  display: inline-block; /* Ensures correct positioning */
-  margin-bottom: -100%;
-  margin-left: -110px;
-  /* Moves the item up by 10px */
-  transform: translateY(-15px);
-}
-.meta::-webkit-scrollbar {
-    display: none;
-  }
-  </style>
-
-    <div class="chat-list">
-      <div class="meta">
-        <button class="adds" id="unreads-btn">Unreads</button>
-        <a href="{% url 'groups' %}">
-        <button class="groups">Groups</button>
-
-      <a href="{% url 'photos_results' %}">
-        <button class="groups">Photos</button></a>
-
-      </a>  
-      <a href="{% url 'post_results' %}">
-        <button class="groups">Blog</button></a>
-      </a>  
-      <a href="{% url 'search_page' %}">
-        <button class="smart">Smart search</button></a>
-      </a>
-
-      </div>
-      <a class="use" href="{% url 'chat_with_user' user.user.username %}">
-
-      <div class="chat-item">
-
-        <div class="status
-        online">
-        <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg" alt="Profile Picture" >
-
-        </div>
-        <div class="chat-details">
-          <h4>John Doe</h4>
-          <p>Hay i've been waiting for you where you.</p>
-
-        </div>
-        <div class="chat-meta">
-          <span style="color: var(--bottom-color);">12:04</span>
-          <span class="unread">1</span>
-        </div>
-      </div>
-    </a>
-
-    <div class="chat-item">
-
-      <div class="status
-      offline">
-      <img src="https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg" alt="Profile Picture" >
-
-      </div>
-      <div class="chat-details">
-        <h4>Emily Smith</h4>
-        <p>You: When we can meet <i class="fas fa-check-circle" style="color: var(--border-color);"></i></p>
-
-      </div>
-      <div class="chat-meta">
-        <span>18:35</span>
-      </div>
-    </div>
-  </a>
-  <div class="chat-item">
-
-    <div class="status
-    online">
-    <img src="https://marketplace.canva.com/EAFOWUXOOvs/1/0/1600w/canva-green-gradient-minimalist-simple-instagram-profile-picture-tBlf3wVYGhg.jpg" alt="Profile Picture" >
-
-    </div>
-    <div class="chat-details">
-      <h4>Ava Williams</h4>
-      <p>Miss you! Let’s catch up soon <i class="fas fa-heart"></i> <i class="fas fa-check-circle" style="color: var(--border-color);"></i></p>
-
-    </div>
-    <div class="chat-meta">
-      <span>9:52</span>
-    </div>
-  </div>
-</a>
-<div class="chat-item">
-
-  <div class="status
-  online">
-  <img src="  https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D
-  " alt="Profile Picture" >
-
-  </div>
-  <div class="chat-details">
-    <h4>Michael Smith</h4>
-    <p>Let's meet at 5 PM! <i class="fas fa-check-circle" style="color: var(--border-color);"></i></p>
-
-  </div>
-  <div class="chat-meta">
-    <span>9:52</span>
-  </div>
-</div>
-</a>
-<div class="chat-item">
-
-  <div class="status online">
-  <img src="https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg=" alt="Profile Picture" >
-
-  </div>
-  <div class="chat-details">
-    <h4>Boss</h4>
-    <p>Meeting at 10 AM, don’t be late. <i class="fas fa-check-circle" style="color: var(--border-color);"></i></p>
-
-  </div>
-  <div class="chat-meta">
-    <span>20:40</span>
-  </div>
-</div>
-</a>
-<div class="chat-item">
-
-  <div class="status online">
-  <img src="https://t3.ftcdn.net/jpg/07/88/41/30/360_F_788413069_ZJ40PWOYeIzrnh10fNhrOdkmLwu26lsn.jpg" alt="Profile Picture" >
-
-  </div>
-  <div class="chat-details">
-    <h4>My Brother</h4>
-    <p>You: Bro, where are you?</p>
-
-  </div>
-  <div class="chat-meta">
-    <span>20:40</span>
-  </div>
-</div>
-</a>
-  
-<div class="chat-item">
-
-  <div class="status online">
-  <img src="https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg" alt="Profile Picture" >
-
-  </div>
-  <div class="chat-details">
-    <h4>William Williams</h4>
-    <p>You: Hay maybe next time OK. <i class="fas fa-check-circle" style="color: var(--border-color);"></i></p>
-
-  </div>
-  <div class="chat-meta">
-    <span>20:40</span>
-  </div>
-</div>
-
-  
-<div class="chat-item">
-
-  <div class="status online">
-  <img src="https://i.pinimg.com/736x/51/ec/d0/51ecd0532e8d08227b15fa65a55cf522.jpg" alt="Profile Picture" >
-
-  </div>
-  <div class="chat-details">
-    <h4>Motivator Channel</h4>
-    <p>"What doesn’t kill you makes you stronger." <i class="fas fa-fire" style="color: var(--border-color);"></i></p>
-
-  </div>
-  <div class="chat-meta">
-    <span style="color: var(--header-color);">New posts</span>
-    <span class="unread">9</span>
-  </div>
-</div>
-</a>
-  
-
-      <div class="chat-item">
-        
-    <div class="chat-details">
-      <h4>Network</h4>
-      <p><i class="fas fa-lock"></i> "Your chats are fully encrypted, private, <br> and secure—nobody but you can access or read them. <br> Your <a href="{% url 'terms' %}">privacy</a> is guaranteed!</p>
-    </div>
-  </div>
-    </div>
-  </div>
   <script>
-    let currentTheme = localStorage.getItem('theme') || 'dark'; // Default to 'dark' if not set in localStorage
-  
-    // Set the theme on page load based on the saved theme
-    const themes = {
-            violet: {
-                                    '--bg-color': '#a42eff',
-                                    '--text-color': '#333',
-                                    '--container-color': '#f2e0fa',
-                                    '--hover-color': '#eec7ff',
-                                    '--border-color': '#b186d1',
-                                    '--header-color': '#b186d1',                                    '--bottom-color': '#a42eff',
-                                    '--bottom-color': '#a42eff',
+    async function searchMusic() {
+      const query = document.getElementById('searchInput').value;
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '';
 
-                                  },
-            light: {
-              '--bg-color': '#333',
-              '--text-color': '#000',
-              '--container-color': '#f9f9f9',
-              '--hover-color': '#f1f1f1',
-              '--border-color': '#ddd',
-              '--header-color': '#f9f9f9',
-              '--bottom-color': '#000',
+      if (!query.trim()) return;
 
-            },
-            dark: {
-              '--bg-color': '#fafafa',
-              '--text-color': '#fff',
-              '--container-color': '#000',
-              '--hover-color': '#2a2a2a',
-              '--border-color': '#333',
-              '--header-color': '#212121',
-              '--bottom-color': '#fafafa',
+      const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&limit=12`);
+      const data = await res.json();
 
-            },
-            green: {
-              '--bg-color': '#4caf50',
-              '--text-color': '#333',
-              '--container-color': '#eaf7e5',
-              '--hover-color': '#c6f2b2',
-              '--border-color': '#88d49f',
-              '--header-color': '#4caf50',
-              '--bottom-color': '#4caf50',
-
-            },
-            orange: {
-              '--bg-color': '#ff9800',
-              '--text-color': '#333',
-              '--container-color': '#fff4e5',
-              '--hover-color': '#ffcc99',
-              '--border-color': '#ff9966',
-              '--header-color': '#ff9800',
-              '--bottom-color': '#ff9800',
-
-            },
-            blue: {
-              '--bg-color': '#2196f3',
-              '--text-color': '#333',
-              '--container-color': '#e0f7fa',
-              '--hover-color': '#80deea',
-              '--border-color': '#4dd0e1',
-              '--header-color': '#2196f3',
-              '--bottom-color': '#2196f3',
-
-            },
-          };
-  
-    const root = document.documentElement;
-  
-    function applyTheme() {
-      const selectedTheme = themes[currentTheme];
-      for (const [key, value] of Object.entries(selectedTheme)) {
-        root.style.setProperty(key, value);
-      }
+      data.results.forEach(track => {
+        const songEl = document.createElement('div');
+        songEl.className = 'song';
+        songEl.innerHTML = `
+          <img src=\"${track.artworkUrl100}\" alt=\"Album Art\">
+          <p><strong>${track.trackName}</strong></p>
+          <p>${track.artistName}</p>
+          <audio controls src=\"${track.previewUrl}\"></audio>
+        `;
+        resultsContainer.appendChild(songEl);
+      });
     }
-  
-    // Apply the default or saved theme on page load
-    applyTheme();
-  
-    function toggleTheme() {
-      // Toggle between themes
-      if (currentTheme === 'violet') currentTheme = 'light';
-      else if (currentTheme === 'light') currentTheme = 'dark';
-      else if (currentTheme === 'dark') currentTheme = 'green';
-      else if (currentTheme === 'green') currentTheme = 'orange';
-      else if (currentTheme === 'orange') currentTheme = 'blue';
-      else currentTheme = 'violet';
-  
-      // Save the selected theme to localStorage
-      localStorage.setItem('theme', currentTheme);
-  
-      // Apply the new theme
-      applyTheme();
-    }
-    
   </script>
-  <script>
-    let showUnreadOnly = false;
-  
-    // Toggle between showing unread and all chats
-    function toggleChats() {
-      const chatItems = document.querySelectorAll('.chat-item');
-  
-      if (showUnreadOnly) {
-        // Show all chats
-        chatItems.forEach(item => {
-          item.style.display = 'flex';
-        });
-        document.querySelector('.adds').textContent = 'Unreads';
-      } else {
-        // Show only unread chats
-        chatItems.forEach(item => {
-          const unreadBadge = item.querySelector('.unread');
-          if (unreadBadge) {
-            item.style.display = 'flex';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-        document.querySelector('.adds').textContent = 'Chats';
-      }
-  
-      showUnreadOnly = !showUnreadOnly;
-    }
-  
-    // Show only friends' chats
-    function showFriendsChats() {
-  const chatItems = document.querySelectorAll('.chat-item');
-
-  chatItems.forEach(item => {
-    const friendBadge = item.querySelector('.friend');
-    if (friendBadge) {
-      item.style.display = 'flex'; // Show chats from friends
-    } else {
-      item.style.display = 'none'; // Hide other chats
-    }
-  });
-
-  // Optional: Change button text or styling after showing friends' chats
-  const button = document.querySelector('.show-friends');
-  button.textContent = 'Chats'; // Change text to indicate toggle
-  button.removeEventListener('click', showFriendsChats);
-  button.addEventListener('click', showAllChats); // Add event to show all chats
-}
-
-function showAllChats() {
-  const chatItems = document.querySelectorAll('.chat-item');
-
-  chatItems.forEach(item => {
-    item.style.display = 'flex'; // Show all chats
-  });
-
-  // Optional: Reset button text or styling
-  const button = document.querySelector('.show-friends');
-  button.textContent = 'Friends'; // Change text back
-  button.removeEventListener('click', showAllChats);
-  button.addEventListener('click', showFriendsChats); // Add event to show friends' chats
-}
-
-// Attach the initial function to the button
-
-
-// Attach the function to the button with class "friends-button"
-
-  
-    // Attach the functions to buttons
-    document.querySelector('.adds').addEventListener('click', toggleChats);
-    document.querySelector('.show-friends').addEventListener('click', showFriendsChats);
-  </script>
-  
-  
-  
 </body>
 </html>
